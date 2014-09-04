@@ -1,0 +1,17 @@
+.block {
+  padding:10px;
+  margin: 5px;
+  border: 1px solid black;
+}
+
+.block .question {
+  width: 100%;
+}
+
+div.done {
+  text-align: right;
+}
+
+div.remove {
+  text-align: right;
+}

@@ -34,7 +34,7 @@ FroggyForm.prototype.addQuestion = function(options) {
   var btnDone = $("<button>").attr("type", "button").html("Done");
   
   var btnRemoveBlock = $("<button>").attr("type", "button").html("Remove");
-  var divRemove = $("<div>").addClass("done");
+  var divRemove = $("<div>").addClass("remove");
   
   btnRemoveBlock.click(function() {
     var index = that.getFormData().indexOf(formBlock);
