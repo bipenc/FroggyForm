@@ -33,15 +33,24 @@
     
     <script>
       $(document).ready(function() {
+        var ff = new FroggyForm();
+        
         $("a.addQuestion").click(function(e){
           e.preventDefault();
           
           var link = $(this);
           var formType = link.data("form-type");
-          var df = new FroggyForm({formType: formType});
           
-          $("#form1").append(df.getView());
+          var question = ff.addQuestion({formType: formType});
+          
+          $("#form1").append(question.getView());
         });
+        
+        var btn = $("<button>").attr("type", "button").html("show form data");
+        btn.click(function(){
+          console.log(JSON.stringify(ff.getFormData()));
+        });
+        $("body").append(btn);
       });
     
     </script>

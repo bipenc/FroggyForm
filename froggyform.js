@@ -1,5 +1,21 @@
-var FroggyForm = function(options) {
-  var formType = options.formType;
+var FroggyForm = function() {
+  var formData = [];
+  
+  this.getFormData = function() {
+    return formData;
+  }
+  
+  //setInterval(function(){ console.log( formData ); }, 5000);
+}
+
+FroggyForm.prototype.addQuestion = function(options) {
+  var that = this;
+  
+  var formBlock = {};
+  formBlock.question = "";
+  formBlock.formType = options.formType;
+  
+  this.getFormData().push(formBlock);
   
   var block = $("<div>")
                 .addClass("block");
@@ -17,18 +33,32 @@ var FroggyForm = function(options) {
               
   var btnDone = $("<button>").attr("type", "button").html("Done");
   
+  var btnRemoveBlock = $("<button>").attr("type", "button").html("Remove");
+  var divRemove = $("<div>").addClass("done");
   
+  btnRemoveBlock.click(function() {
+    var index = that.getFormData().indexOf(formBlock);
+    
+    that.getFormData().splice(index, 1);
+    
+    block.remove();
+  });
+  
+  divRemove.append(btnRemoveBlock);
+  
+  block.append(divRemove);
   inputBlock.append(txtQuestion);
   inputBlock.append(optionsBlock);
   block.append(inputBlock);
   
   var option;
-  if (formType == "textfield") {
+  if (formBlock.formType == "textfield") {
     option = new TextboxOption();
-  } else if (formType == "textarea") {
+  } else if (formBlock.formType == "textarea") {
     option = new TextareaOption();
-  } else if (formType == "checkbox") {
-    option = new CheckboxOption();
+  } else if (formBlock.formType == "checkbox") {
+    formBlock.options = [];
+    option = new CheckboxOption(formBlock);
   }
   
   optionsBlock.append(option.getView());
@@ -37,6 +67,12 @@ var FroggyForm = function(options) {
   divDone.append(btnDone);
   
   inputBlock.append(divDone);
+  
+  txtQuestion.change(function() {
+    var value = txtQuestion.val();
+    
+    formBlock.question = value;
+  });
   
   
   ///////////////////////////////////////////////////////////////////////////
@@ -80,6 +116,8 @@ var FroggyForm = function(options) {
   this.getView = function() {
     return block;
   }
+  
+  return this;
 }
 
 function TextboxOption() {
@@ -118,7 +156,7 @@ function TextareaOption() {
   }
 }
 
-function CheckboxOption() {
+function CheckboxOption(formBlock) {
   var optDiv = $("<div>");
   
   var optionList = [];
@@ -139,10 +177,23 @@ function CheckboxOption() {
     optDiv.append(optRow);
     
     optionList.push(optInput);
+    formBlock.options.push(optInput.val());
+    
+    optInput.change(function() {
+      var value = optInput.val();
+      
+      var index = optionList.indexOf(optInput);
+      
+      formBlock.options[index] = value;
+    });
     
     optDelete.click(function() {
       optRow.remove();
-      optionList.splice(optionList.indexOf(optInput), 1);
+      
+      var index = optionList.indexOf(optInput)
+      optionList.splice(index, 1);
+      
+      formBlock.options.splice(index, 1);
     });
   });
   
