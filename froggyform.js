@@ -5,6 +5,15 @@ var FroggyForm = function() {
     return formData;
   }
   
+  this.loadData = function(displayBoard, existingData) {
+    for (var i=0; i<existingData.length; i++) {
+      var data = existingData[i];
+      
+      var question = this.addQuestion(data);
+      displayBoard.append(question.getView());
+    }
+  }
+  
   //setInterval(function(){ console.log( formData ); }, 5000);
 }
 
@@ -12,8 +21,10 @@ FroggyForm.prototype.addQuestion = function(options) {
   var that = this;
   
   var formBlock = {};
-  formBlock.question = "";
-  formBlock.formType = options.formType;
+  formBlock.question = options.question || "";
+  formBlock.formType = options.formType || "textfield";
+  formBlock.options = [];
+  formBlock.existingOptions = options.options || [];
   
   this.getFormData().push(formBlock);
   
@@ -30,6 +41,7 @@ FroggyForm.prototype.addQuestion = function(options) {
               .attr("type", "text")
               .addClass("question")
               .attr("placeholder", "Please write your question here.");
+  txtQuestion.val(formBlock.question);
               
   var btnDone = $("<button>").attr("type", "button").html("Done");
   
@@ -57,7 +69,6 @@ FroggyForm.prototype.addQuestion = function(options) {
   } else if (formBlock.formType == "textarea") {
     option = new TextareaOption();
   } else if (formBlock.formType == "checkbox") {
-    formBlock.options = [];
     option = new CheckboxOption(formBlock);
   }
   
@@ -117,6 +128,8 @@ FroggyForm.prototype.addQuestion = function(options) {
     return block;
   }
   
+  delete formBlock.existingOptions;
+  
   return this;
 }
 
@@ -165,11 +178,13 @@ function CheckboxOption(formBlock) {
                     .attr("type", "button")
                     .html("Add Option");
   
-  btnAddOption.click(function() {
+  var addCheckboxOption = function(existingOption) {
     var optRow = $("<div>");
     
-    var optInput = $("<input>").attr("type", "text");
+    var optInput = $("<input>").attr("type", "text").attr("placeholder", "Write your option here");
     var optDelete = $("<button>").attr("type", "button").html("Delete Option");
+    
+    optInput.val(existingOption || "")
     
     optRow.append(optInput);
     optRow.append(optDelete);
@@ -195,7 +210,14 @@ function CheckboxOption(formBlock) {
       
       formBlock.options.splice(index, 1);
     });
-  });
+  }
+  
+  btnAddOption.click(function addOption() { addCheckboxOption() });
+  
+  for (var i=0; i<formBlock.existingOptions.length; i++) {
+    var existingOption = formBlock.existingOptions[i];
+    addCheckboxOption(existingOption);
+  }
   
   optDiv.append(btnAddOption);
   

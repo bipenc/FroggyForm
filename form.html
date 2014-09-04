@@ -20,7 +20,10 @@
     
     <script>
       $(document).ready(function() {
+        var data = [{"question":"q111","formType":"textfield"},{"question":"q22222","formType":"checkbox","options":["o1","o2", "ooo333"]}];
+        
         var ff = new FroggyForm();
+        ff.loadData($("#form1"), data);
         
         $("a.addQuestion").click(function(e){
           e.preventDefault();
@@ -38,6 +41,7 @@
           console.log(JSON.stringify(ff.getFormData()));
         });
         $("body").append(btn);
+
       });
     
     </script>
