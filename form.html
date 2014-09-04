@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Form</title>
+  </head>
+  <body>
+    <style>
+      .block {
+        padding:10px;
+        margin: 5px;
+        border: 1px solid black;
+      }
+      
+      .block .question {
+        width: 100%;
+      }
+      
+      div.done {
+        text-align: right;
+      }
+    </style>
+    <div id="form1">
+      
+      <ul>
+        <li><a href="#" class="addQuestion" data-form-type="textfield">Textfield</a></li>
+        <li><a href="#" class="addQuestion" data-form-type="textarea">Textarea</a></li>
+        <li><a href="#" class="addQuestion" data-form-type="checkbox">Checkbox</a></li>
+        <li><a href="#" class="addQuestion" data-form-type="radio">Radio</a></li>
+      </ul>
+    </div>
+    
+    <script type="text/javascript" src="jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="froggyform.js"></script>
+    
+    <script>
+      $(document).ready(function() {
+        $("a.addQuestion").click(function(e){
+          e.preventDefault();
+          
+          var link = $(this);
+          var formType = link.data("form-type");
+          var df = new FroggyForm({formType: formType});
+          
+          $("#form1").append(df.getView());
+        });
+      });
+    
+    </script>
+  </body>
+</html>
