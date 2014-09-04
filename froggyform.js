@@ -70,6 +70,8 @@ FroggyForm.prototype.addQuestion = function(options) {
     option = new TextareaOption();
   } else if (formBlock.formType == "checkbox") {
     option = new CheckboxOption(formBlock);
+  } else if (formBlock.formType == "radio") {
+    option = new RadioOption(formBlock);
   }
   
   optionsBlock.append(option.getView());
@@ -237,6 +239,86 @@ function CheckboxOption(formBlock) {
       
       var row = $("<div>");
       var cb = $("<input>").attr("type", "checkbox");
+      var label = $("<label>").html(opt.val());
+      
+      row.append(cb);
+      row.append(label);
+      
+      preview.append(row);
+    }
+    
+    return preview;
+  }
+}
+
+function RadioOption(formBlock) {
+  var optDiv = $("<div>");
+  
+  var optionList = [];
+  
+  var btnAddOption = $("<button>")
+                    .attr("type", "button")
+                    .html("Add Option");
+  
+  var addCheckboxOption = function(existingOption) {
+    var optRow = $("<div>");
+    
+    var optInput = $("<input>").attr("type", "text").attr("placeholder", "Write your option here");
+    var optDelete = $("<button>").attr("type", "button").html("Delete Option");
+    
+    optInput.val(existingOption || "")
+    
+    optRow.append(optInput);
+    optRow.append(optDelete);
+    
+    optDiv.append(optRow);
+    
+    optionList.push(optInput);
+    formBlock.options.push(optInput.val());
+    
+    optInput.change(function() {
+      var value = optInput.val();
+      
+      var index = optionList.indexOf(optInput);
+      
+      formBlock.options[index] = value;
+    });
+    
+    optDelete.click(function() {
+      optRow.remove();
+      
+      var index = optionList.indexOf(optInput)
+      optionList.splice(index, 1);
+      
+      formBlock.options.splice(index, 1);
+    });
+  }
+  
+  btnAddOption.click(function addOption() { addCheckboxOption() });
+  
+  for (var i=0; i<formBlock.existingOptions.length; i++) {
+    var existingOption = formBlock.existingOptions[i];
+    addCheckboxOption(existingOption);
+  }
+  
+  optDiv.append(btnAddOption);
+  
+  this.getView = function() {
+    return optDiv;
+  }
+  
+  this.getOptionList = function() {
+    return optionList;
+  }
+  
+  this.getOptionPreview = function() {
+    var preview = $("<div>");
+    
+    for (var i=0; i<optionList.length; i++) {
+      var opt = optionList[i];
+      
+      var row = $("<div>");
+      var cb = $("<input>").attr("type", "radio");
       var label = $("<label>").html(opt.val());
       
       row.append(cb);
