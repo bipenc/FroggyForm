@@ -1,20 +1,140 @@
-var FroggyForm = function() {
+var FroggyForm = function(_container) {
+  jQuery.event.props.push('dataTransfer');
+  
+  var container = _container;
   var formData = [];
   
   this.getFormData = function() {
     return formData;
   }
   
-  this.loadData = function(displayBoard, existingData) {
+  this.moveFormData = function(from, to) {
+    var tempData = [];
+    
+    if (from > to) {
+      for (var i=0; i<=to-1; i++) {
+        tempData.push(formData[i]);
+      }
+      
+      tempData.push(formData[from]);
+      
+      for (var i=to; i<formData.length; i++) {
+        if (i != from) {
+          tempData.push(formData[i]);
+        }
+      }
+    }
+    else {
+      for (var i=0; i<= to; i++) {
+        if (i != from) {
+          tempData.push(formData[i]);
+        }
+      }
+      
+      tempData.push(formData[from]);
+      
+      for (var i=to+1; i<formData.length; i++) {
+        tempData.push(formData[i]);
+      }
+    }
+    
+    formData = tempData;
+  }
+  
+  this.getContainer = function() {
+    return container;
+  }
+  
+  this.loadData = function(existingData) {
     for (var i=0; i<existingData.length; i++) {
       var data = existingData[i];
       
       var question = this.addQuestion(data);
-      displayBoard.append(question.getView());
+      container.append(question.getView());
+      question.getFormBlock().doneAction();
     }
   }
+}
+
+FroggyForm.prototype.makeDraggable = function(element) {
+  var froggyFormRef = this;
+  froggyFormRef.dragSrcEl = null;
   
-  //setInterval(function(){ console.log( formData ); }, 5000);
+  function handleDragStart(e) {
+    this.style.opacity = "0.4";
+    
+    froggyFormRef.dragSrcEl = $(this);
+    
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+  }
+  
+  function handleDragOver(e) {
+    e.preventDefault()
+    
+    e.dataTransfer.dropEffect = 'move';
+    
+    return false;
+  }
+  
+  function handleDragEnter(e) {
+    this.classList.add("over");  
+  }
+  
+  function handleDragLeave(e) {
+    this.classList.remove("over");
+  }
+  
+  function handleDrop(e) {
+    //console.log("drop", froggyFormRef.dragSrcEl, $(this));
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    }
+    
+    if (froggyFormRef.dragSrcEl[0] != $(this)[0]) {
+
+      var srcIndex = froggyFormRef.dragSrcEl.prevAll().length;
+      var destIndex = $(this).prevAll().length;
+      
+      //console.log(srcIndex, destIndex);
+      if (srcIndex < destIndex) {
+        //console.log(1);
+        $(this).after(froggyFormRef.dragSrcEl);
+      } else {
+        //console.log(2);
+        $(this).before(froggyFormRef.dragSrcEl);
+      }
+      
+      console.log("FROM ", srcIndex, " TO ", destIndex);
+      froggyFormRef.moveFormData(srcIndex, destIndex);
+    }
+
+  
+    return false;
+  }
+  
+  function handleDragEnd(e) {
+    //console.log("drag end", e);
+    this.style.opacity = "1";
+  
+    froggyFormRef.getContainer().children("div").each(function(index) {
+      
+      var box = froggyFormRef.getContainer().children("div").get(index);
+      
+      $(box).removeClass('over');
+    });
+  }
+  
+  
+  element.attr("draggable", true);
+          
+  element.bind("dragstart", handleDragStart);
+  element.on("dragenter", handleDragEnter);
+  element.on("dragover", handleDragOver);
+  element.on("dragleave", handleDragLeave);
+  
+  element.on("drop", handleDrop);
+  element.on("dragend", handleDragEnd);
 }
 
 FroggyForm.prototype.addQuestion = function(options) {
@@ -92,7 +212,7 @@ FroggyForm.prototype.addQuestion = function(options) {
   
   var previewBlock = $("<div>").addClass("previewBlock");
   
-  var previewQuestion = $("<div>").addClass("previewQuestion");
+  var previewQuestion = $("<div>").addClass("previewQuestion").html(formBlock.question);
   
   var previewOptions = option.getOptionPreview();
   
@@ -103,7 +223,7 @@ FroggyForm.prototype.addQuestion = function(options) {
     previewQuestion.html(txtQuestion.val());
   });
   
-  btnDone.click(function() {
+  formBlock.doneAction = function() {
     previewOptions.remove();
     
     previewOptions = option.getOptionPreview();
@@ -111,7 +231,9 @@ FroggyForm.prototype.addQuestion = function(options) {
     
     inputBlock.hide();
     previewBlock.show();
-  });
+  };
+  
+  btnDone.click(formBlock.doneAction);
   
   // hide preview initially
   previewBlock.hide();
@@ -130,7 +252,13 @@ FroggyForm.prototype.addQuestion = function(options) {
     return block;
   }
   
+  this.getFormBlock = function() {
+    return formBlock;
+  }
+  
   delete formBlock.existingOptions;
+  
+  this.makeDraggable(block);
   
   return this;
 }

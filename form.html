@@ -5,14 +5,14 @@
     <link href="froggyform.css" media="all" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <ul>
+      <li><a href="#" class="addQuestion" data-form-type="textfield">Textfield</a></li>
+      <li><a href="#" class="addQuestion" data-form-type="textarea">Textarea</a></li>
+      <li><a href="#" class="addQuestion" data-form-type="checkbox">Checkbox</a></li>
+      <li><a href="#" class="addQuestion" data-form-type="radio">Radio</a></li>
+    </ul>
+    
     <div id="form1">
-      
-      <ul>
-        <li><a href="#" class="addQuestion" data-form-type="textfield">Textfield</a></li>
-        <li><a href="#" class="addQuestion" data-form-type="textarea">Textarea</a></li>
-        <li><a href="#" class="addQuestion" data-form-type="checkbox">Checkbox</a></li>
-        <li><a href="#" class="addQuestion" data-form-type="radio">Radio</a></li>
-      </ul>
     </div>
     
     <script type="text/javascript" src="jquery-1.8.2.js"></script>
@@ -20,10 +20,16 @@
     
     <script>
       $(document).ready(function() {
-        var data = [{"question":"q111","formType":"textfield"},{"question":"q22222","formType":"checkbox","options":["o1","o2", "ooo333"]}];
+        var data = [
+                    {"question":"Question One","formType":"textfield"},
+                    {"question":"Question 222222222222222","formType":"checkbox","options":["o1","o2", "ooo333"]},
+                    {"question":"Question Threeee","formType":"textarea"},
+                    {"question":"Question Four","formType":"radio","options":["Radio 1","Radio 2", "Radio 333"]}
+                  ];
         
-        var ff = new FroggyForm();
-        ff.loadData($("#form1"), data);
+        var container = $("#form1");
+        var ff = new FroggyForm(container);
+        ff.loadData(data);
         
         $("a.addQuestion").click(function(e){
           e.preventDefault();

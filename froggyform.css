@@ -15,3 +15,7 @@ div.done {
 div.remove {
   text-align: right;
 }
+
+div.over {
+  background-color: blue;
+}
