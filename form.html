@@ -19,18 +19,23 @@
         </p>
       </div>
       
-      <div class="btn-group panel panel-body panel-default" id="question-control">
-        <button type="button" class="btn btn-default" data-form-type="textfield">Textfield</button>
-        <button type="button" class="btn btn-default" data-form-type="textarea">Textarea</button>
-        <button type="button" class="btn btn-default" data-form-type="checkbox">Checkbox</button>
-        <button type="button" class="btn btn-default" data-form-type="radio">Radio</button>
+      <div class="panel panel-default panel-body" id="question-control" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+        <ul class="nav nav-pills nav-stacked">
+          <li><button type="button" class="btn btn-default" data-form-type="textfield">Textfield</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="textarea">Textarea</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="checkbox">Checkbox</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="radio">Radio</button></li>
+        </ul>
       </div>
       
       <div id="form1">
       </div>
+      
+      <div class="well" id="console"></div>
     </div>
     
     <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/froggyform.js"></script>
     
     <script>
@@ -59,10 +64,18 @@
         
         var btn = $("<button>").attr("type", "button").addClass("btn").html("show form data");
         btn.click(function(){
-          console.log(JSON.stringify(ff.getFormData()));
+          $("#console").html(JSON.stringify(ff.getFormData()));
         });
         $(".container").append(btn);
 
+        $('#question-control').affix({
+          offset: {
+            top: 100
+          , bottom: function () {
+              return (this.bottom = $('.footer').outerHeight(true))
+            }
+          }
+        });
       });
     
     </script>
