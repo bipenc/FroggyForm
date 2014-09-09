@@ -148,7 +148,7 @@ FroggyForm.prototype.addQuestion = function(options) {
   
   this.getFormData().push(formBlock);
   
-  var block = $("<div>")
+  var block = $("<li>")
                 .addClass("panel")
                 .addClass("panel-default")
                 .addClass("panel-body");
