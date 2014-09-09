@@ -312,15 +312,19 @@ function CheckboxOption(formBlock) {
                     .html("Add Option");
   
   var addCheckboxOption = function(existingOption) {
-    var optRow = $("<div>");
+    var optRow = $("<div>").addClass("input-group");
     
-    var optInput = $("<input>").attr("type", "text").attr("placeholder", "Write your option here");
-    var optDelete = $("<button>").attr("type", "button").addClass("btn").html("Delete Option");
+    var optInput = $("<input>").attr("type", "text").addClass("form-control").attr("placeholder", "Write your option here");
+    
+    var inputGroupAddon = $("<span>").addClass("input-group-addon");
+    
+    var optDelete = $("<button>").attr("type", "button").addClass("btn btn-xs").html("Delete Option");
     
     optInput.val(existingOption || "")
     
+    inputGroupAddon.append(optDelete);
     optRow.append(optInput);
-    optRow.append(optDelete);
+    optRow.append(inputGroupAddon);
     
     optDiv.append(optRow);
     
@@ -346,13 +350,12 @@ function CheckboxOption(formBlock) {
   }
   
   btnAddOption.click(function addOption() { addCheckboxOption() });
+  optDiv.append(btnAddOption);
   
   for (var i=0; i<formBlock.existingOptions.length; i++) {
     var existingOption = formBlock.existingOptions[i];
     addCheckboxOption(existingOption);
   }
-  
-  optDiv.append(btnAddOption);
   
   this.getView = function() {
     return optDiv;
