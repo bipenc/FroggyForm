@@ -15,7 +15,7 @@
       <div class="jumbotron">
         <h1>Froggy Form</h1>
         <p>
-          This is a simple javascript library which mimics the form of google forms. Now supports dragging feature for sorting.
+          This is a simple javascript library which mimics the form of google forms. Now supports dragging feature for sorting and double click to edit question.
         </p>
       </div>
       
@@ -41,10 +41,10 @@
     <script>
       $(document).ready(function() {
         var data = [
-                    {"question":"Question One","formType":"textfield"},
-                    {"question":"Question 222222222222222","formType":"checkbox","options":["o1","o2", "ooo333"]},
-                    {"question":"Question Threeee","formType":"textarea"},
-                    {"question":"Question Four","formType":"radio","options":["Radio 1","Radio 2", "Radio 333"]}
+                    {"question":"Tell us your name","formType":"textfield"},
+                    {"question":"Why don't you describe something about yourself?","formType":"textarea"},
+                    {"question":"Can you tell us programming languages that you're familiar with?","formType":"checkbox","options":["Javascript","Lua","Cobol","Actionscript"]},
+                    {"question":"What's your preferred programming language?","formType":"radio","options":["Javascript","Java","C#","Ruby"]}
                   ];
         
         var container = $("#form1");
