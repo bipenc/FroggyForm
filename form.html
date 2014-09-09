@@ -1,22 +1,38 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <title>Form</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+    <title>Froggy Form</title>
     
-    <link href="froggyform.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="css/froggyform.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <ul>
-      <li><a href="#" class="addQuestion" data-form-type="textfield">Textfield</a></li>
-      <li><a href="#" class="addQuestion" data-form-type="textarea">Textarea</a></li>
-      <li><a href="#" class="addQuestion" data-form-type="checkbox">Checkbox</a></li>
-      <li><a href="#" class="addQuestion" data-form-type="radio">Radio</a></li>
-    </ul>
     
-    <div id="form1">
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Froggy Form</h1>
+        <p>
+          This is a simple javascript library which mimics the form of google forms. Now supports dragging feature for sorting.
+        </p>
+      </div>
+      
+      <div class="btn-group panel panel-body panel-default" id="question-control">
+        <button type="button" class="btn btn-default" data-form-type="textfield">Textfield</button>
+        <button type="button" class="btn btn-default" data-form-type="textarea">Textarea</button>
+        <button type="button" class="btn btn-default" data-form-type="checkbox">Checkbox</button>
+        <button type="button" class="btn btn-default" data-form-type="radio">Radio</button>
+      </div>
+      
+      <div id="form1">
+      </div>
     </div>
     
-    <script type="text/javascript" src="jquery-1.8.2.js"></script>
-    <script type="text/javascript" src="froggyform.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="js/froggyform.js"></script>
     
     <script>
       $(document).ready(function() {
@@ -31,7 +47,7 @@
         var ff = new FroggyForm(container);
         ff.loadData(data);
         
-        $("a.addQuestion").click(function(e){
+        $("#question-control button").click(function(e){
           e.preventDefault();
           
           var link = $(this);
@@ -42,11 +58,11 @@
           $("#form1").append(question.getView());
         });
         
-        var btn = $("<button>").attr("type", "button").html("show form data");
+        var btn = $("<button>").attr("type", "button").addClass("btn").html("show form data");
         btn.click(function(){
           console.log(JSON.stringify(ff.getFormData()));
         });
-        $("body").append(btn);
+        $(".container").append(btn);
 
       });
     
