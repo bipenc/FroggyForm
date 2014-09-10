@@ -30,6 +30,7 @@
           <li><button type="button" class="btn btn-default" data-form-type="checkboxes">Checkbox</button></li>
           <li><button type="button" class="btn btn-default" data-form-type="multiplechoice">Radio</button></li>
           <li><button type="button" class="btn btn-default" data-form-type="choosefromalist">Choose from a list</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="scale">Scale</button></li>
         </ul>
       </div>
       
@@ -50,7 +51,8 @@
                     {"question":"Why don't you describe something about yourself?","formType":"paragraph"},
                     {"question":"Can you tell us programming languages that you're familiar with?","formType":"checkboxes","options":["Javascript","Lua","Cobol","Actionscript"]},
                     {"question":"What's your preferred programming language?","formType":"multiplechoice","options":["Javascript","Java","C#","Ruby"]},
-                    {"question":"Years of experience?","formType":"choosefromalist","options":["< 2 years","2 - 5 years","6 - 10 years","10+ years"]}
+                    {"question":"Years of experience?","formType":"choosefromalist","options":["< 2 years","2 - 5 years","6 - 10 years","10+ years"]},
+                    {"question":"How would you rate your programming skills?","formType":"scale","scale":{"start":1, "end":8, "startLabel":"Poor", "endLabel":"Excellent"}}
                   ];
         
         var container = $("#form1");

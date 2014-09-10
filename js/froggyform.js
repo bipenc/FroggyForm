@@ -145,6 +145,7 @@ FroggyForm.prototype.addQuestion = function(options) {
   formBlock.formType = options.formType || "text";
   formBlock.options = [];
   formBlock.existingOptions = options.options || [];
+  formBlock.scale = options.scale || null;
   
   this.getFormData().push(formBlock);
   
@@ -196,6 +197,8 @@ FroggyForm.prototype.addQuestion = function(options) {
     option = new RadioOption(formBlock);
   } else if (formBlock.formType == "choosefromalist") {
     option = new ComboOption(formBlock);
+  } else if (formBlock.formType == "scale") {
+    option = new ScaleOption(formBlock);
   }
   
   optionsBlock.append(option.getView());
@@ -455,11 +458,13 @@ function RadioOption(formBlock) {
   this.getOptionPreview = function() {
     var preview = $("<div>");
     
+    var name = new Date().getTime();
+    
     for (var i=0; i<optionList.length; i++) {
       var opt = optionList[i];
       
       var row = $("<div>").addClass("radio");
-      var cb = $("<input>").attr("type", "radio");
+      var cb = $("<input>").attr("type", "radio").attr("name", name);
       var label = $("<label>");
       
       label.append(cb);
@@ -540,7 +545,7 @@ function ComboOption(formBlock) {
   this.getOptionPreview = function() {
     var preview = $("<div>");
     
-    var select = $("<select>");
+    var select = $("<select>").addClass("form-control");
     
     for (var i=0; i<optionList.length; i++) {
       var opt = optionList[i];
@@ -549,6 +554,62 @@ function ComboOption(formBlock) {
       select.append(option);
     }
     preview.append(select);
+    
+    return preview;
+  }
+}
+
+function ScaleOption(formBlock) {
+  var optDiv = $("<div>");
+  
+  var comboStart = $("<select>").addClass("form-control");
+  var comboEnd = $("<select>").addClass("form-control");
+  
+  comboStart.append($("<option>").attr("value", 0).text(0));
+  comboStart.append($("<option>").attr("value", 1).text(1));
+  
+  for (var i=0; i<=10; i++) {
+    comboEnd.append($("<option>").attr("value", i).text(i));
+  }
+  
+  if (formBlock.scale) {
+    comboStart.val(formBlock.scale.start);
+    comboEnd.val(formBlock.scale.end);
+  }
+  
+  optDiv.append(comboStart);
+  optDiv.append($("<span>").html("to"));
+  optDiv.append(comboEnd);
+  
+  var addComboOption = function(existingOption) {
+    var comboStart = $("<select>").addClass("form-control");
+    var comboEnd = $("<select>").addClass("form-control");
+  }
+  
+  this.getView = function() {
+    return optDiv;
+  }
+  
+  this.getOptionList = function() {
+    return optionList;
+  }
+  
+  this.getOptionPreview = function() {
+    var preview = $("<div>");
+    
+    preview.append($("<span>").html(formBlock.scale.startLabel));
+    
+    var name = new Date().getTime();
+    for (var i=formBlock.scale.start; i<=formBlock.scale.end; i++) {
+      
+      var label = $("<label>");
+      var radio = $("<input>").attr("type", "radio").attr("value", i).attr("name", name);
+      label.append(radio);
+      label.append($("<span>").html(i));
+      preview.append(label);
+    }
+    
+    preview.append($("<span>").html(formBlock.scale.endLabel));
     
     return preview;
   }
