@@ -597,19 +597,19 @@ function ScaleOption(formBlock) {
   this.getOptionPreview = function() {
     var preview = $("<div>");
     
-    preview.append($("<span>").html(formBlock.scale.startLabel));
+    preview.append($("<span>").addClass("radio-inline").html(formBlock.scale.startLabel));
     
     var name = new Date().getTime();
     for (var i=formBlock.scale.start; i<=formBlock.scale.end; i++) {
       
-      var label = $("<label>");
+      var label = $("<label>").addClass("radio-inline");
       var radio = $("<input>").attr("type", "radio").attr("value", i).attr("name", name);
       label.append(radio);
       label.append($("<span>").html(i));
       preview.append(label);
     }
     
-    preview.append($("<span>").html(formBlock.scale.endLabel));
+    preview.append($("<span>").addClass("radio-inline").html(formBlock.scale.endLabel));
     
     return preview;
   }
