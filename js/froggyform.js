@@ -600,7 +600,7 @@ function ScaleOption(formBlock) {
     preview.append($("<span>").addClass("radio-inline").html(formBlock.scale.startLabel));
     
     var name = new Date().getTime();
-    for (var i=formBlock.scale.start; i<=formBlock.scale.end; i++) {
+    for (var i=Number(comboStart.val()); i<=Number(comboEnd.val()); i++) {
       
       var label = $("<label>").addClass("radio-inline");
       var radio = $("<input>").attr("type", "radio").attr("value", i).attr("name", name);
