@@ -10,7 +10,11 @@
     <link href="css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    
+    <style>
+      #question-control {
+        z-index: 1;
+      }
+    </style>
     <div class="container">
       <div class="jumbotron">
         <h1>Froggy Form</h1>
@@ -21,10 +25,11 @@
       
       <div class="panel panel-default panel-body" id="question-control" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
         <ul class="nav nav-pills nav-stacked">
-          <li><button type="button" class="btn btn-default" data-form-type="textfield">Textfield</button></li>
-          <li><button type="button" class="btn btn-default" data-form-type="textarea">Textarea</button></li>
-          <li><button type="button" class="btn btn-default" data-form-type="checkbox">Checkbox</button></li>
-          <li><button type="button" class="btn btn-default" data-form-type="radio">Radio</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="text">Textfield</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="paragraph">Textarea</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="checkboxes">Checkbox</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="multiplechoice">Radio</button></li>
+          <li><button type="button" class="btn btn-default" data-form-type="choosefromalist">Choose from a list</button></li>
         </ul>
       </div>
       
@@ -41,10 +46,11 @@
     <script>
       $(document).ready(function() {
         var data = [
-                    {"question":"Tell us your name","formType":"textfield"},
-                    {"question":"Why don't you describe something about yourself?","formType":"textarea"},
-                    {"question":"Can you tell us programming languages that you're familiar with?","formType":"checkbox","options":["Javascript","Lua","Cobol","Actionscript"]},
-                    {"question":"What's your preferred programming language?","formType":"radio","options":["Javascript","Java","C#","Ruby"]}
+                    {"question":"Tell us your name","formType":"text"},
+                    {"question":"Why don't you describe something about yourself?","formType":"paragraph"},
+                    {"question":"Can you tell us programming languages that you're familiar with?","formType":"checkboxes","options":["Javascript","Lua","Cobol","Actionscript"]},
+                    {"question":"What's your preferred programming language?","formType":"multiplechoice","options":["Javascript","Java","C#","Ruby"]},
+                    {"question":"Years of experience?","formType":"choosefromalist","options":["< 2 years","2 - 5 years","6 - 10 years","10+ years"]}
                   ];
         
         var container = $("#form1");
@@ -68,14 +74,14 @@
         });
         $(".container").append(btn);
 
-        $('#question-control').affix({
+        /*$('#question-control').affix({
           offset: {
             top: 100
           , bottom: function () {
               return (this.bottom = $('.footer').outerHeight(true))
             }
           }
-        });
+        });*/
       });
     
     </script>
