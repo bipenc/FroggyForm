@@ -572,10 +572,13 @@ function ScaleOption(formBlock) {
     comboEnd.append($("<option>").attr("value", i).text(i));
   }
   
-  if (formBlock.scale) {
-    comboStart.val(formBlock.scale.start);
-    comboEnd.val(formBlock.scale.end);
+  if (!formBlock.scale) {
+    formBlock.scale = {};
+    formBlock.scale.start = 1;
+    formBlock.scale.end = 10;
   }
+  comboStart.val(formBlock.scale.start);
+  comboEnd.val(formBlock.scale.end);
   
   optDiv.append(comboStart);
   optDiv.append($("<span>").html("to"));
