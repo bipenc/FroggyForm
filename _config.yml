@@ -2,6 +2,8 @@
 title: Froggy Form
 email: kailashraj@lftechnology.com
 description: > # this means to ignore newlines until "baseurl:"
+  This is a simple javascript library which mimics the form of google forms.
+  Now supports dragging feature for sorting and double click to edit question.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://lftechnology.com" # the base hostname & protocol for your site
 twitter_username: FriedDust
